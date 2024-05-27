@@ -1,4 +1,5 @@
 import java.util.Scanner;
+
 public class BankAcctApp {
     public static void main(String[] args) {
         // Welcome message
@@ -63,6 +64,38 @@ public class BankAcctApp {
             System.out.println("\nCustomer details:");
             System.out.println(customer);
 
+            // Create accounts for the customer
+            CheckingAccount checkingAccount = new CheckingAccount("CHK001");
+            SavingsAccount savingsAccount = new SavingsAccount("SAV001");
+
+            boolean customerActive = true;
+            while (customerActive) {
+                // Display menu for transactions
+                System.out.println("\nSelect an account to perform a transaction:");
+                System.out.println("1. Checking Account");
+                System.out.println("2. Savings Account");
+                System.out.println("3. Exit");
+
+                System.out.print("Enter your choice: ");
+                int choice = scanner.nextInt();
+                scanner.nextLine(); // Consume newline
+
+                switch (choice) {
+                    case 1:
+                        processAccount(checkingAccount, scanner);
+                        break;
+                    case 2:
+                        processAccount(savingsAccount, scanner);
+                        break;
+                    case 3:
+                        customerActive = false;
+                        break;
+                    default:
+                        System.out.println("Invalid choice. Please enter 1, 2, or 3.");
+                        break;
+                }
+            }
+
             // Ask if the user wants to add another person
             System.out.print("\nDo you want to add another Customer? (yes/no): ");
             String choice = scanner.nextLine().toLowerCase();
@@ -72,5 +105,53 @@ public class BankAcctApp {
         }
 
         scanner.close();
+    }
+
+    private static void processAccount(Account account, Scanner scanner) {
+        boolean accountActive = true;
+        while (accountActive) {
+            // Display account menu
+            System.out.println("\nAccount Menu");
+            System.out.println("1. Deposit");
+            System.out.println("2. Withdrawal");
+            System.out.println("3. Check Balance");
+            System.out.println("4. Apply Interest");
+            System.out.println("5. Exit");
+
+            System.out.print("Enter your choice: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter deposit amount: $");
+                    double depositAmount = scanner.nextDouble();
+                    scanner.nextLine(); // Consume newline
+                    account.deposit(depositAmount);
+                    break;
+                case 2:
+                    System.out.print("Enter withdrawal amount: $");
+                    double withdrawalAmount = scanner.nextDouble();
+                    scanner.nextLine(); // Consume newline
+                    account.withdrawal(withdrawalAmount);
+                    break;
+                case 3:
+                    System.out.println("Current Balance: $" + account.balance());
+                    break;
+                case 4:
+                    if (account instanceof SavingsAccount) {
+                        ((SavingsAccount) account).applyInterest();
+                    } else if (account instanceof CheckingAccount) {
+                        ((CheckingAccount) account).applyInterest();
+                    }
+                    break;
+                case 5:
+                    accountActive = false;
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please enter a number between 1 and 5.");
+                    break;
+            }
+        }
     }
 }

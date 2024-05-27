@@ -1,12 +1,11 @@
-public class Account {
-    // Instance variables
+public abstract class Account {
     private String accountNumber;
     private String accountType;
     private double serviceFee;
     private double interestRate;
     private double overdraftFee;
     private double balance;
-    // Constructor
+
     public Account(String accountNumber, String accountType, double serviceFee, double interestRate, double overdraftFee) {
         this.accountNumber = accountNumber;
         this.accountType = accountType;
@@ -15,7 +14,7 @@ public class Account {
         this.overdraftFee = overdraftFee;
         this.balance = 0.0; // Initially zero balance
     }
-    // Getters and setters
+
     public String getAccountNumber() {
         return accountNumber;
     }
@@ -63,4 +62,8 @@ public class Account {
     public void setBalance(double balance) {
         this.balance = balance;
     }
+
+    public abstract void withdrawal(double amount);
+    public abstract void deposit(double amount);
+    public abstract double balance();
 }
