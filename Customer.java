@@ -1,3 +1,5 @@
+package src;
+
 public class Customer {
     private String customerId;
     private String customerSSN;
