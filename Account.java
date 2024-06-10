@@ -1,6 +1,5 @@
 package src;
-
-public abstract class Account {
+public abstract class Account implements AccountInterface {
     private String accountNumber;
     private String accountType;
     private double serviceFee;
@@ -14,9 +13,10 @@ public abstract class Account {
         this.serviceFee = serviceFee;
         this.interestRate = interestRate;
         this.overdraftFee = overdraftFee;
-        this.balance = 0.0; // Initially zero balance
+        this.balance = 0.0;
     }
 
+    // Getters and setters
     public String getAccountNumber() {
         return accountNumber;
     }
@@ -65,7 +65,13 @@ public abstract class Account {
         this.balance = balance;
     }
 
+    // Abstract methods to be implemented by subclasses
     public abstract void withdrawal(double amount);
     public abstract void deposit(double amount);
     public abstract double balance();
+
+    // Method to apply interest
+    public void applyInterest() {
+        balance += balance * interestRate;
+    }
 }

@@ -1,16 +1,17 @@
 package src;
-
 import java.time.LocalDate;
 
-public class SavingsAccount extends Account implements AccountInterface {
+public class SavingsAccount extends Account {
+    // Instance variables for transactions
     private LocalDate transactionDate;
     private String transactionType; // "DEP" for deposit, "WTH" for withdrawal
     private double transactionAmount;
 
     public SavingsAccount(String accountNumber) {
-        super(accountNumber, "Savings", 0.25, 0.05, 0.0); // Interest rate is set to 5%
+        super(accountNumber, "Savings", 0.25, 0.05, 0.0);
     }
 
+    // Method to record a transaction
     private void recordTransaction(String type, double amount) {
         this.transactionDate = LocalDate.now();
         this.transactionType = type;
@@ -23,10 +24,8 @@ public class SavingsAccount extends Account implements AccountInterface {
             setBalance(getBalance() - amount - getServiceFee());
             recordTransaction("WTH", amount);
             System.out.println("Withdrawal of $" + amount + " was successful.");
-        } else if (amount > 0 && amount + getServiceFee() > getBalance()) {
-            System.out.println("Insufficient balance to withdraw $" + amount);
         } else {
-            System.out.println("Invalid withdrawal amount.");
+            System.out.println("Invalid withdrawal amount or insufficient balance.");
         }
     }
 
@@ -46,12 +45,7 @@ public class SavingsAccount extends Account implements AccountInterface {
         return getBalance();
     }
 
-    public void applyInterest() {
-        double interestEarned = getBalance() * getInterestRate();
-        setBalance(getBalance() + interestEarned);
-        System.out.println("Interest of $" + interestEarned + " was applied to the account.");
-    }
-
+    // Getters for transaction details
     public LocalDate getTransactionDate() {
         return transactionDate;
     }
@@ -62,11 +56,5 @@ public class SavingsAccount extends Account implements AccountInterface {
 
     public double getTransactionAmount() {
         return transactionAmount;
-    }
-
-    // Override setInterestRate to set the interest rate to 5%
-    @Override
-    public void setInterestRate(double interestRate) {
-        super.setInterestRate(0.05); // 5%
     }
 }

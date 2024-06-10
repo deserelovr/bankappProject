@@ -10,7 +10,7 @@ public class BankAcctAppGUI extends JFrame {
     private JTextField customerIdField, ssnField, lastNameField, firstNameField, streetField, cityField, zipField, phoneField, transactionAmountField, transactionDateField;
     private JComboBox<String> stateComboBox;
     private JRadioButton checkingRadioButton, savingsRadioButton, depositRadioButton, withdrawalRadioButton;
-    private JButton addCustomerButton, displayButton, performTransactionButton, clearButton;
+    private JButton addCustomerButton, displayButton, performTransactionButton, clearButton, applyInterestButton;
     private JTextArea displayArea;
     private JLabel statusLabel;
 
@@ -19,53 +19,56 @@ public class BankAcctAppGUI extends JFrame {
 
     public BankAcctAppGUI() {
         setTitle("Bank Account Application");
-        setSize(600, 700);
+        setSize(800, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new GridLayout(17, 2));
+        setLayout(new BorderLayout());
 
-        // Input fields
-        add(new JLabel("Customer ID:"));
+        // Input panel
+        JPanel inputPanel = new JPanel();
+        inputPanel.setLayout(new GridLayout(17, 2));
+
+        inputPanel.add(new JLabel("Customer ID:"));
         customerIdField = new JTextField();
-        add(customerIdField);
+        inputPanel.add(customerIdField);
 
-        add(new JLabel("SSN (9 digits):"));
+        inputPanel.add(new JLabel("SSN (9 digits):"));
         ssnField = new JTextField();
-        add(ssnField);
+        inputPanel.add(ssnField);
 
-        add(new JLabel("Last Name:"));
+        inputPanel.add(new JLabel("Last Name:"));
         lastNameField = new JTextField();
-        add(lastNameField);
+        inputPanel.add(lastNameField);
 
-        add(new JLabel("First Name:"));
+        inputPanel.add(new JLabel("First Name:"));
         firstNameField = new JTextField();
-        add(firstNameField);
+        inputPanel.add(firstNameField);
 
-        add(new JLabel("Street:"));
+        inputPanel.add(new JLabel("Street:"));
         streetField = new JTextField();
-        add(streetField);
+        inputPanel.add(streetField);
 
-        add(new JLabel("City:"));
+        inputPanel.add(new JLabel("City:"));
         cityField = new JTextField();
-        add(cityField);
+        inputPanel.add(cityField);
 
-        add(new JLabel("State:"));
+        inputPanel.add(new JLabel("State:"));
         stateComboBox = new JComboBox<>(new String[]{
                 "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD",
                 "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC",
                 "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"
         });
-        add(stateComboBox);
+        inputPanel.add(stateComboBox);
 
-        add(new JLabel("Zip (5 digits):"));
+        inputPanel.add(new JLabel("Zip (5 digits):"));
         zipField = new JTextField();
-        add(zipField);
+        inputPanel.add(zipField);
 
-        add(new JLabel("Phone (10 digits):"));
+        inputPanel.add(new JLabel("Phone (10 digits):"));
         phoneField = new JTextField();
-        add(phoneField);
+        inputPanel.add(phoneField);
 
         // Account type radio buttons
-        add(new JLabel("Account Type:"));
+        inputPanel.add(new JLabel("Account Type:"));
         JPanel accountTypePanel = new JPanel();
         ButtonGroup accountTypeGroup = new ButtonGroup();
         checkingRadioButton = new JRadioButton("Checking");
@@ -74,10 +77,10 @@ public class BankAcctAppGUI extends JFrame {
         accountTypeGroup.add(savingsRadioButton);
         accountTypePanel.add(checkingRadioButton);
         accountTypePanel.add(savingsRadioButton);
-        add(accountTypePanel);
+        inputPanel.add(accountTypePanel);
 
         // Transaction type radio buttons
-        add(new JLabel("Transaction Type:"));
+        inputPanel.add(new JLabel("Transaction Type:"));
         JPanel transactionTypePanel = new JPanel();
         ButtonGroup transactionTypeGroup = new ButtonGroup();
         depositRadioButton = new JRadioButton("Deposit");
@@ -86,42 +89,48 @@ public class BankAcctAppGUI extends JFrame {
         transactionTypeGroup.add(withdrawalRadioButton);
         transactionTypePanel.add(depositRadioButton);
         transactionTypePanel.add(withdrawalRadioButton);
-        add(transactionTypePanel);
+        inputPanel.add(transactionTypePanel);
 
         // Transaction amount and date fields
-        add(new JLabel("Transaction Amount:"));
+        inputPanel.add(new JLabel("Transaction Amount:"));
         transactionAmountField = new JTextField();
-        add(transactionAmountField);
+        inputPanel.add(transactionAmountField);
 
-        add(new JLabel("Transaction Date (YYYY-MM-DD):"));
+        inputPanel.add(new JLabel("Transaction Date (YYYY-MM-DD):"));
         transactionDateField = new JTextField();
-        add(transactionDateField);
+        inputPanel.add(transactionDateField);
 
         // Buttons
         addCustomerButton = new JButton("Add New Customer and Account");
         addCustomerButton.addActionListener(new AddCustomerListener());
-        add(addCustomerButton);
+        inputPanel.add(addCustomerButton);
 
         displayButton = new JButton("Display Customer and Account Data");
         displayButton.addActionListener(new DisplayListener());
-        add(displayButton);
+        inputPanel.add(displayButton);
 
         performTransactionButton = new JButton("Perform Transaction");
         performTransactionButton.addActionListener(new PerformTransactionListener());
-        add(performTransactionButton);
+        inputPanel.add(performTransactionButton);
+
+        applyInterestButton = new JButton("Apply Interest");
+        applyInterestButton.addActionListener(new ApplyInterestListener());
+        inputPanel.add(applyInterestButton);
 
         clearButton = new JButton("Clear");
         clearButton.addActionListener(new ClearListener());
-        add(clearButton);
+        inputPanel.add(clearButton);
+
+        add(inputPanel, BorderLayout.NORTH);
 
         // Display area
-        displayArea = new JTextArea(10, 40);
+        displayArea = new JTextArea(20, 50);
         displayArea.setEditable(false);
-        add(new JScrollPane(displayArea));
+        add(new JScrollPane(displayArea), BorderLayout.CENTER);
 
         // Status label
-        statusLabel = new JLabel("");
-        add(statusLabel);
+        statusLabel = new JLabel("Status: ");
+        add(statusLabel, BorderLayout.SOUTH);
 
         setVisible(true);
     }
@@ -212,6 +221,29 @@ public class BankAcctAppGUI extends JFrame {
                         "\nBalance: $" + account.getBalance());
                 statusLabel.setText("Success: Transaction completed.");
 
+            } catch (Exception ex) {
+                displayArea.setText("Error: " + ex.getMessage());
+                statusLabel.setText("Error: " + ex.getMessage());
+            }
+        }
+    }
+
+    private class ApplyInterestListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (account == null) {
+                displayArea.setText("Please add a customer and account first.");
+                statusLabel.setText("Error: Please add a customer and account first.");
+                return;
+            }
+            try {
+                account.applyInterest();
+                displayArea.setText("Interest applied successfully.\n" +
+                        "Customer ID: " + customer.getCustomerId() +
+                        "\nAccount Number: " + account.getAccountNumber() +
+                        "\nAccount Type: " + account.getAccountType() +
+                        "\nBalance: $" + account.getBalance());
+                statusLabel.setText("Success: Interest applied.");
             } catch (Exception ex) {
                 displayArea.setText("Error: " + ex.getMessage());
                 statusLabel.setText("Error: " + ex.getMessage());
